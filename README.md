@@ -24,8 +24,8 @@ pkg install python git
 ### 2. Clone repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/golike-auto.git
-cd golike-auto
+git clone https://github.com/emHung/testnm.git
+cd testnm
 ```
 
 ### 3. Cài đặt thư viện
@@ -43,8 +43,8 @@ Tải Python từ [python.org](https://www.python.org/downloads/)
 ### 2. Clone repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/golike-auto.git
-cd golike-auto
+git clone https://github.com/emHung/testnm.git
+cd testnm
 ```
 
 ### 3. Cài đặt thư viện
@@ -109,11 +109,11 @@ golike-auto/
 
 ## Troubleshooting
 
-### Lỗi "curl-cffi not found"
+### Lỗi "requests not found"
 
 ```bash
 pip install --upgrade pip
-pip install curl-cffi
+pip install requests
 ```
 
 ### Lỗi kết nối

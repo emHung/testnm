@@ -26,11 +26,9 @@ pip install --upgrade pip
 cd ~/storage/downloads
 
 # Clone project
-git clone https://github.com/YOUR_USERNAME/golike-auto.git
+git clone https://github.com/emHung/testnm.git
+cd testnm
 
-# Vào thư mục project
-cd golike-auto
-```
 
 ## Bước 4: Cài đặt thư viện
 
@@ -38,14 +36,14 @@ cd golike-auto
 pip install -r requirements.txt
 ```
 
-### Nếu gặp lỗi với curl-cffi
+### Nếu gặp lỗi cài đặt
 
 ```bash
-# Cài đặt dependencies
-pkg install rust binutils -y
+# Cập nhật pip
+pip install --upgrade pip
 
-# Cài đặt lại curl-cffi
-pip install --no-cache-dir curl-cffi
+# Cài đặt lại
+pip install -r requirements.txt
 ```
 
 ## Bước 5: Chạy chương trình
@@ -121,12 +119,10 @@ echo "cd ~/golike-auto" >> ~/.bashrc
 chmod +x *.py
 ```
 
-### Lỗi "No module named 'curl_cffi'"
+### Lỗi "No module named 'requests'"
 
 ```bash
-pip uninstall curl-cffi
-pkg install rust binutils
-pip install curl-cffi
+pip install requests
 ```
 
 ### Lỗi "Connection timeout"

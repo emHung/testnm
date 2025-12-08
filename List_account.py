@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from curl_cffi import requests
+import requests
 import json
 
 headers = {
@@ -25,8 +25,7 @@ def get_accounts(platform_name, api_endpoint):
     try:
         response = requests.get(
             api_endpoint,
-            headers=headers,
-            impersonate="chrome110"
+            headers=headers
         )
 
         print(f"HTTP Status: {response.status_code}")

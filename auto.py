@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from curl_cffi import requests
+import requests
 import json
 import time
 import os
@@ -51,8 +51,7 @@ class GolikeAuto:
             response = requests.get(
                 url,
                 headers=self.headers,
-                params=params,
-                impersonate="chrome110"
+                params=params
             )
             
             if response.status_code == 200:
@@ -112,8 +111,7 @@ class GolikeAuto:
             
             response = requests.post(
                 skip_url,
-                headers=self.headers,
-                impersonate="chrome110"
+                headers=self.headers
             )
             
             if response.status_code != 200:
@@ -158,8 +156,7 @@ class GolikeAuto:
             
             response = requests.post(
                 complete_url,
-                headers=self.headers,
-                impersonate="chrome110"
+                headers=self.headers
             )
             
             if response.status_code == 200:

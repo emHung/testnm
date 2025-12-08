@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from curl_cffi import requests
+import requests
 import json
 
 class GolikeAuth:
@@ -50,8 +50,7 @@ class GolikeAuth:
         try:
             response = requests.get(
                 'https://gateway.golike.net/api/users/me',
-                headers=self.headers,
-                impersonate="chrome110"
+                headers=self.headers
             )
             
             if response.status_code == 200:
