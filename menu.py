@@ -50,12 +50,17 @@ class GolikeMenu:
 
             if response.status_code == 200:
                 data = response.json()
-                accounts = data.get('data', [])
+                raw_data = data.get('data', [])
+                
+                # Facebook có cấu trúc data.data
+                if platform_name == "Facebook" and isinstance(raw_data, dict):
+                    accounts = raw_data.get('data', [])
+                else:
+                    accounts = raw_data
                 
                 # Kiểm tra nếu data không phải là list
                 if not isinstance(accounts, list):
                     print(f"⚠️ Dữ liệu trả về không đúng định dạng")
-                    print(f"Raw response: {data}")
                     return []
                 
                 return accounts

@@ -10,6 +10,7 @@ class GolikeAuto:
         self.headers = headers
         self.current_account = None
         self.current_platform = None
+        self.delay = 5  # Delay mặc định 5 giây
     
     def set_account(self, account, platform):
         """Thiết lập tài khoản và platform hiện tại"""
@@ -118,6 +119,11 @@ class GolikeAuto:
             print(f"❌ Lỗi khi hoàn thành nhiệm vụ: {e}")
             return False
     
+    def set_delay(self, delay):
+        """Thiết lập thời gian delay giữa các nhiệm vụ"""
+        self.delay = delay
+        print(f"⏱️ Đã thiết lập delay: {delay} giây")
+    
     def run_auto(self, max_jobs=10):
         """Chạy auto làm nhiệm vụ"""
         if not self.current_account or not self.current_platform:
@@ -126,6 +132,7 @@ class GolikeAuto:
         
         print(f"\n🚀 Bắt đầu auto {self.current_platform}...")
         print(f"📊 Giới hạn: {max_jobs} nhiệm vụ")
+        print(f"⏱️ Delay giữa các nhiệm vụ: {self.delay} giây")
         print("="*60)
         
         completed = 0
@@ -149,8 +156,8 @@ class GolikeAuto:
             
             # Đợi trước khi lấy nhiệm vụ tiếp theo
             if i < max_jobs - 1:
-                print("\n⏳ Đợi 5 giây trước khi tiếp tục...")
-                time.sleep(5)
+                print(f"\n⏳ Đợi {self.delay} giây trước khi tiếp tục...")
+                time.sleep(self.delay)
         
         print("\n" + "="*60)
         print("📊 KẾT QUẢ AUTO")

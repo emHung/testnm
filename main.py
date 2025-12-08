@@ -88,6 +88,12 @@ def main():
                     except ValueError:
                         max_jobs = 10
                     
+                    try:
+                        delay = int(input("👉 Delay giữa các nhiệm vụ (giây, mặc định 5): ") or "5")
+                        auto.set_delay(delay)
+                    except ValueError:
+                        auto.set_delay(5)
+                    
                     auto.run_auto(max_jobs)
                     input("\nNhấn Enter để tiếp tục...")
             
@@ -102,6 +108,12 @@ def main():
                     except ValueError:
                         max_jobs = 10
                     
+                    try:
+                        delay = int(input("👉 Delay giữa các nhiệm vụ (giây, mặc định 5): ") or "5")
+                        auto.set_delay(delay)
+                    except ValueError:
+                        auto.set_delay(5)
+                    
                     auto.run_auto(max_jobs)
                     input("\nNhấn Enter để tiếp tục...")
             
@@ -115,6 +127,12 @@ def main():
                         max_jobs = int(input("\n👉 Số lượng nhiệm vụ muốn làm (mặc định 10): ") or "10")
                     except ValueError:
                         max_jobs = 10
+                    
+                    try:
+                        delay = int(input("👉 Delay giữa các nhiệm vụ (giây, mặc định 5): ") or "5")
+                        auto.set_delay(delay)
+                    except ValueError:
+                        auto.set_delay(5)
                     
                     auto.run_auto(max_jobs)
                     input("\nNhấn Enter để tiếp tục...")

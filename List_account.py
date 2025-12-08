@@ -33,37 +33,49 @@ def get_accounts(platform_name, api_endpoint):
 
         data = response.json()
         print(f"API success: {data.get('success')}")
-        accounts = data.get('data', [])
+        
+        # Xử lý cấu trúc data khác nhau cho từng platform
+        raw_data = data.get('data', [])
+        
+        # Facebook có cấu trúc data.data
+        if platform_name == "Facebook" and isinstance(raw_data, dict):
+            accounts = raw_data.get('data', [])
+        else:
+            accounts = raw_data
         
         # Kiểm tra nếu data không phải là list
         if not isinstance(accounts, list):
             print(f"⚠️ Dữ liệu trả về không đúng định dạng: {type(accounts)}")
-            print(f"Raw data: {accounts}")
             return
 
         print(f"Số lượng tài khoản {platform_name}: {len(accounts)}\n")
 
         if len(accounts) > 0:
             print(f"Danh sách tài khoản {platform_name}:")
-            print("------------------------------------------------------------")
             
             if platform_name == "Facebook":
                 # Hiển thị dạng bảng cho Facebook
-                print(f"{'ID':<10} | {'FB_ID':<20} | {'FB_NAME':<30}")
-                print("-" * 65)
+                print("=" * 80)
+                print(f"{'ID':<12} | {'FB_ID':<18} | {'FB_NAME':<40}")
+                print("=" * 80)
                 for acc in accounts:
                     if not isinstance(acc, dict):
-                        print(f"⚠️ Account không đúng định dạng: {acc}")
                         continue
-                    acc_id = str(acc.get('id', ''))[:10]
-                    fb_id = str(acc.get('fb_id', ''))[:20]
-                    fb_name = str(acc.get('fb_name', ''))[:30]
-                    print(f"{acc_id:<10} | {fb_id:<20} | {fb_name:<30}")
+                    acc_id = str(acc.get('id', 'N/A'))
+                    fb_id = str(acc.get('fb_id', 'N/A'))
+                    fb_name = str(acc.get('fb_name', 'N/A'))
+                    
+                    # Cắt ngắn nếu quá dài
+                    if len(fb_name) > 40:
+                        fb_name = fb_name[:37] + "..."
+                    
+                    print(f"{acc_id:<12} | {fb_id:<18} | {fb_name:<40}")
+                print("=" * 80)
             else:
                 # Hiển thị bình thường cho TikTok và Instagram
+                print("-" * 60)
                 for acc in accounts:
                     if not isinstance(acc, dict):
-                        print(f"⚠️ Account không đúng định dạng: {acc}")
                         continue
                     if platform_name == "TikTok":
                         print(f"ID: {acc.get('id')} | "
@@ -73,6 +85,7 @@ def get_accounts(platform_name, api_endpoint):
                         print(f"ID: {acc.get('id')} | "
                               f"@{acc.get('username')} | "
                               f"{acc.get('full_name')}")
+                print("-" * 60)
         else:
             print(f"⚠️ Không tìm thấy tài khoản {platform_name} nào!")
 
