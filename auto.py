@@ -6,6 +6,7 @@ import json
 import time
 import os
 from memu_controller import MemuController
+from tiktok_automation import TikTokAutomation, FacebookAutomation, InstagramAutomation
 
 class GolikeAuto:
     def __init__(self, headers):
@@ -15,6 +16,11 @@ class GolikeAuto:
         self.delay = 5  # Delay mặc định 5 giây
         self.memu = None
         self.use_memu = False
+        
+        # Automation helpers
+        self.tiktok_auto = TikTokAutomation()
+        self.facebook_auto = FacebookAutomation()
+        self.instagram_auto = InstagramAutomation()
     
     def set_account(self, account, platform):
         """Thiết lập tài khoản và platform hiện tại"""
@@ -125,29 +131,37 @@ class GolikeAuto:
             
             print(f"✅ Đã nhận nhiệm vụ!")
             
-            # Mở link nhiệm vụ
+            # Thực hiện nhiệm vụ tự động
+            job_type = job.get('type', '').lower()
+            
             if link:
-                if self.use_memu:
-                    # Mở trên MEmu
-                    print(f"📱 Đang mở nhiệm vụ trên MEmu...")
-                    self.open_job_on_memu(job)
-                else:
-                    # Mở trên trình duyệt
-                    print(f"🌐 Đang mở link nhiệm vụ...")
-                    import webbrowser
-                    webbrowser.open(link)
+                success = False
                 
-                # Đợi người dùng thực hiện nhiệm vụ
-                print(f"\n⏰ Vui lòng thực hiện nhiệm vụ!")
-                print(f"   (Follow/Like/Subscribe theo yêu cầu)")
+                if self.current_platform == "TikTok":
+                    if 'follow' in job_type:
+                        success = self.tiktok_auto.auto_follow_tiktok(link, wait_time=5)
+                    elif 'like' in job_type:
+                        success = self.tiktok_auto.auto_like_tiktok(link, wait_time=5)
+                    elif 'comment' in job_type:
+                        comment = job.get('comment_content', 'Nice video!')
+                        success = self.tiktok_auto.auto_comment_tiktok(link, comment, wait_time=5)
+                    else:
+                        # Mở link mặc định
+                        import webbrowser
+                        webbrowser.open(link)
+                        success = True
                 
-                wait_time = 15  # Đợi 15 giây để thực hiện
-                for remaining in range(wait_time, 0, -1):
-                    print(f"\r⏳ Đợi {remaining} giây để hoàn thành nhiệm vụ...", end='', flush=True)
-                    time.sleep(1)
-                print()
+                elif self.current_platform == "Facebook":
+                    success = self.facebook_auto.auto_like_facebook(link, wait_time=5)
+                
+                elif self.current_platform == "Instagram":
+                    success = self.instagram_auto.auto_follow_instagram(link, wait_time=5)
+                
+                if not success:
+                    print("⚠️ Không thể thực hiện tự động, vui lòng làm thủ công!")
+                    time.sleep(10)
             else:
-                # Nếu không có link, đợi 3 giây
+                print("⚠️ Không có link nhiệm vụ!")
                 time.sleep(3)
             
             # Bước 2: Complete job

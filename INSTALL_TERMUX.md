@@ -108,7 +108,7 @@ tmux attach -t golike
 Thêm vào file `~/.bashrc`:
 
 ```bash
-echo "cd ~/golike-auto" >> ~/.bashrc
+echo "cd ~/testnm" >> ~/.bashrc
 ```
 
 ## Troubleshooting
@@ -137,7 +137,41 @@ pip install requests
 - Đóng các app khác
 - Tăng delay giữa các nhiệm vụ
 
-## Push lên GitHub
+## Cập nhật code từ GitHub
+
+### Xóa và clone lại (Đơn giản)
+
+```bash
+# Backup token
+cp ~/testnm/auth.txt ~/auth_backup.txt
+
+# Xóa thư mục cũ
+cd ~ && rm -rf testnm
+
+# Clone lại
+git clone https://github.com/YOUR_USERNAME/testnm.git
+cd testnm
+
+# Restore token
+cp ~/auth_backup.txt auth.txt
+
+# Cài đặt
+pip install -r requirements.txt
+```
+
+### Pull update (Giữ auth.txt)
+
+```bash
+cd ~/testnm
+git stash
+git pull origin main
+git stash pop
+pip install -r requirements.txt
+```
+
+Xem thêm: [UPDATE_GUIDE.md](UPDATE_GUIDE.md)
+
+## Push lên GitHub (Cho dev)
 
 ### Lần đầu
 
@@ -152,7 +186,7 @@ git init
 git add .
 git commit -m "Initial commit"
 git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/golike-auto.git
+git remote add origin https://github.com/YOUR_USERNAME/testnm.git
 git push -u origin main
 ```
 
@@ -169,3 +203,14 @@ git push
 - **KHÔNG** push file `auth.txt` lên GitHub
 - File `.gitignore` đã được cấu hình để bỏ qua
 - Kiểm tra trước khi push: `git status`
+
+## Commands nhanh
+
+```bash
+# Update nhanh (1 dòng)
+cd ~/testnm && git stash && git pull && git stash pop && pip install -r requirements.txt
+
+# Xóa và clone lại (1 dòng)
+cd ~ && rm -rf testnm && git clone https://github.com/YOUR_USERNAME/testnm.git && cd testnm && pip install -r requirements.txt
+```
+

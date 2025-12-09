@@ -88,7 +88,7 @@ python main.py
 ## Cấu trúc thư mục
 
 ```
-golike-auto/
+testnm/
 ├── main.py              # File chính
 ├── login.py             # Xử lý đăng nhập
 ├── menu.py              # Menu và hiển thị
@@ -132,6 +132,27 @@ pip install requests
 
 MIT License
 
+## Cập nhật code
+
+### Xóa và clone lại
+
+```bash
+cd ~ && rm -rf testnm
+git clone https://github.com/YOUR_USERNAME/testnm.git
+cd testnm && pip install -r requirements.txt
+```
+
+### Pull update
+
+```bash
+cd ~/testnm
+git pull origin main
+pip install -r requirements.txt
+```
+
+Xem chi tiết: [UPDATE_GUIDE.md](UPDATE_GUIDE.md)
+
 ## Disclaimer
 
 Tool chỉ để học tập và nghiên cứu. Sử dụng có trách nhiệm.
+
