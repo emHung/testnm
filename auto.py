@@ -329,3 +329,83 @@ class GolikeAuto:
         self.log(summary)
         self.log(f"Hoàn thành: {completed} | Thất bại: {failed} | Thu nhập: {completed * 50} VNĐ | Thời gian: {int(duration)}s")
         self.log("="*50)
+    
+    def run_auto_infinite(self):
+        """Chạy auto vô hạn cho đến khi hết nhiệm vụ"""
+        if not self.current_account or not self.current_platform:
+            print("❌ Chưa chọn tài khoản!")
+            return
+        
+        # Hỏi có dùng MEmu không (chỉ trên Windows)
+        if not self.use_memu and os.name == 'nt':
+            use_memu_choice = input("\n👉 Sử dụng MEmu giả lập? (Y/n): ").strip().lower()
+            if use_memu_choice != 'n':
+                memu_path = input("👉 Đường dẫn MEmu (Enter = mặc định): ").strip()
+                if memu_path:
+                    self.setup_memu(memu_path)
+                else:
+                    self.setup_memu()
+        
+        print(f"\n🚀 Bắt đầu auto {self.current_platform}...")
+        print(f"🔄 Chế độ: Vòng lặp vô hạn (cho đến khi hết nhiệm vụ)")
+        print(f"⏱️ Delay giữa các nhiệm vụ: {self.delay} giây")
+        print(f"📱 Chế độ: {'MEmu' if self.use_memu else 'Trình duyệt'}")
+        print(f"⚠️ Nhấn Ctrl+C để dừng")
+        print("="*60)
+        
+        # Ghi log bắt đầu
+        self.session_start = datetime.now()
+        self.log(f"=== BẮT ĐẦU AUTO VÔ HẠN {self.current_platform} ===")
+        self.log(f"Account ID: {self.current_account.get('id')} | Delay: {self.delay}s")
+        
+        completed = 0
+        failed = 0
+        job_count = 0
+        
+        try:
+            while True:
+                job_count += 1
+                print(f"\n--- Nhiệm vụ #{job_count} ---")
+                
+                jobs = self.get_jobs()
+                
+                if len(jobs) == 0:
+                    print("⚠️ Không còn nhiệm vụ! Dừng auto.")
+                    break
+                
+                job = jobs[0]  # Lấy nhiệm vụ đầu tiên
+                
+                if self.complete_job(job):
+                    completed += 1
+                else:
+                    failed += 1
+                
+                # Hiển thị thống kê tạm thời
+                print(f"\n📊 Tạm tính: ✅ {completed} | ❌ {failed} | 💰 {completed * 50} VNĐ")
+                
+                # Đợi trước khi lấy nhiệm vụ tiếp theo
+                print(f"⏳ Đợi {self.delay} giây trước khi tiếp tục...")
+                time.sleep(self.delay)
+                
+        except KeyboardInterrupt:
+            print("\n\n⚠️ Đã dừng auto bởi người dùng!")
+            self.log("Dừng auto bởi người dùng (Ctrl+C)", "WARNING")
+        
+        # Tính toán thời gian
+        session_end = datetime.now()
+        duration = (session_end - self.session_start).total_seconds()
+        
+        print("\n" + "="*60)
+        print("📊 KẾT QUẢ AUTO")
+        print("="*60)
+        print(f"✅ Hoàn thành: {completed} nhiệm vụ")
+        print(f"❌ Thất bại: {failed} nhiệm vụ")
+        print(f"💰 Tổng thu nhập: {completed * 50} VNĐ")
+        print(f"⏱️ Thời gian: {int(duration)} giây ({int(duration/60)} phút)")
+        print("="*60)
+        
+        # Ghi log tổng kết
+        summary = f"=== KẾT THÚC AUTO VÔ HẠN {self.current_platform} ==="
+        self.log(summary)
+        self.log(f"Hoàn thành: {completed} | Thất bại: {failed} | Thu nhập: {completed * 50} VNĐ | Thời gian: {int(duration)}s")
+        self.log("="*50)

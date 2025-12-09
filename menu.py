@@ -3,6 +3,7 @@
 
 import requests
 import json
+import os
 
 class GolikeMenu:
     def __init__(self, headers):
@@ -131,5 +132,36 @@ class GolikeMenu:
         print("2. 🎵 Làm nhiệm vụ TikTok")
         print("3. 📘 Làm nhiệm vụ Facebook")
         print("4. 📷 Làm nhiệm vụ Instagram")
+        print("5. 📝 Xem log hoạt động")
         print("0. 🚪 Thoát")
         print("="*60)
+    
+    def view_log(self, log_file="auto_log.txt", lines=50):
+        """Xem log hoạt động"""
+        print("\n📝 LOG HOẠT ĐỘNG")
+        print("="*60)
+        
+        try:
+            if not os.path.exists(log_file):
+                print("⚠️ Chưa có file log!")
+                return
+            
+            with open(log_file, 'r', encoding='utf-8') as f:
+                all_lines = f.readlines()
+            
+            if len(all_lines) == 0:
+                print("⚠️ File log trống!")
+                return
+            
+            # Lấy N dòng cuối
+            recent_lines = all_lines[-lines:] if len(all_lines) > lines else all_lines
+            
+            print(f"Hiển thị {len(recent_lines)} dòng gần nhất:\n")
+            for line in recent_lines:
+                print(line.rstrip())
+            
+            print("\n" + "="*60)
+            print(f"📊 Tổng số dòng log: {len(all_lines)}")
+            
+        except Exception as e:
+            print(f"❌ Lỗi khi đọc log: {e}")

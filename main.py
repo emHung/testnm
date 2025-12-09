@@ -84,17 +84,12 @@ def main():
                     auto.set_account(account, "TikTok")
                     
                     try:
-                        max_jobs = int(input("\n👉 Số lượng nhiệm vụ muốn làm (mặc định 10): ") or "10")
-                    except ValueError:
-                        max_jobs = 10
-                    
-                    try:
-                        delay = int(input("👉 Delay giữa các nhiệm vụ (giây, mặc định 5): ") or "5")
+                        delay = int(input("\n👉 Delay giữa các nhiệm vụ (giây, mặc định 5): ") or "5")
                         auto.set_delay(delay)
                     except ValueError:
                         auto.set_delay(5)
                     
-                    auto.run_auto(max_jobs)
+                    auto.run_auto_infinite()
                     input("\nNhấn Enter để tiếp tục...")
             
             elif choice == "3":
@@ -104,17 +99,12 @@ def main():
                     auto.set_account(account, "Facebook")
                     
                     try:
-                        max_jobs = int(input("\n👉 Số lượng nhiệm vụ muốn làm (mặc định 10): ") or "10")
-                    except ValueError:
-                        max_jobs = 10
-                    
-                    try:
-                        delay = int(input("👉 Delay giữa các nhiệm vụ (giây, mặc định 5): ") or "5")
+                        delay = int(input("\n👉 Delay giữa các nhiệm vụ (giây, mặc định 5): ") or "5")
                         auto.set_delay(delay)
                     except ValueError:
                         auto.set_delay(5)
                     
-                    auto.run_auto(max_jobs)
+                    auto.run_auto_infinite()
                     input("\nNhấn Enter để tiếp tục...")
             
             elif choice == "4":
@@ -124,18 +114,23 @@ def main():
                     auto.set_account(account, "Instagram")
                     
                     try:
-                        max_jobs = int(input("\n👉 Số lượng nhiệm vụ muốn làm (mặc định 10): ") or "10")
-                    except ValueError:
-                        max_jobs = 10
-                    
-                    try:
-                        delay = int(input("👉 Delay giữa các nhiệm vụ (giây, mặc định 5): ") or "5")
+                        delay = int(input("\n👉 Delay giữa các nhiệm vụ (giây, mặc định 5): ") or "5")
                         auto.set_delay(delay)
                     except ValueError:
                         auto.set_delay(5)
                     
-                    auto.run_auto(max_jobs)
+                    auto.run_auto_infinite()
                     input("\nNhấn Enter để tiếp tục...")
+            
+            elif choice == "5":
+                # Xem log
+                try:
+                    lines = int(input("\n👉 Số dòng muốn xem (mặc định 50): ") or "50")
+                except ValueError:
+                    lines = 50
+                
+                menu.view_log(lines=lines)
+                input("\nNhấn Enter để tiếp tục...")
             
             else:
                 print("\n❌ Lựa chọn không hợp lệ!")

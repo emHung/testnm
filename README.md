@@ -126,7 +126,7 @@ pip install requests
 
 - Kiểm tra MEmu đã chạy chưa
 - Kiểm tra đường dẫn MEmu đúng chưa
-- Mặc định: `C:\Program Files\Microvirt\MEmu`
+- Mặc định: `D:\Program Files\Microvirt\MEmu`
 
 ## License
 
@@ -138,7 +138,7 @@ MIT License
 
 ```bash
 cd ~ && rm -rf testnm
-git clone https://github.com/YOUR_USERNAME/testnm.git
+git clone https://github.com/emHung/testnm.git
 cd testnm && pip install -r requirements.txt
 ```
 
