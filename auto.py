@@ -5,6 +5,7 @@ import requests
 import json
 import time
 import os
+from datetime import datetime
 from memu_controller import MemuController
 from tiktok_automation import TikTokAutomation, FacebookAutomation, InstagramAutomation
 
@@ -21,12 +22,29 @@ class GolikeAuto:
         self.tiktok_auto = TikTokAutomation()
         self.facebook_auto = FacebookAutomation()
         self.instagram_auto = InstagramAutomation()
+        
+        # Log file
+        self.log_file = "auto_log.txt"
+        self.session_start = datetime.now()
+    
+    def log(self, message, level="INFO"):
+        """Ghi log vào file"""
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        log_message = f"[{timestamp}] [{level}] {message}\n"
+        
+        try:
+            with open(self.log_file, 'a', encoding='utf-8') as f:
+                f.write(log_message)
+        except Exception as e:
+            print(f"⚠️ Không thể ghi log: {e}")
     
     def set_account(self, account, platform):
         """Thiết lập tài khoản và platform hiện tại"""
         self.current_account = account
         self.current_platform = platform
-        print(f"\n✅ Đã thiết lập tài khoản {platform}: {account.get('id')}")
+        msg = f"Đã thiết lập tài khoản {platform}: {account.get('id')}"
+        print(f"\n✅ {msg}")
+        self.log(msg)
     
     def get_jobs(self):
         """Lấy danh sách nhiệm vụ"""
@@ -64,13 +82,19 @@ class GolikeAuto:
                 data = response.json()
                 if data.get('success'):
                     jobs = data.get('data', [])
-                    print(f"✅ Tìm thấy {len(jobs)} nhiệm vụ!")
+                    msg = f"Tìm thấy {len(jobs)} nhiệm vụ {self.current_platform}"
+                    print(f"✅ {msg}")
+                    self.log(msg)
                     return jobs
                 else:
-                    print(f"⚠️ {data.get('message', 'Không có nhiệm vụ')}")
+                    msg = data.get('message', 'Không có nhiệm vụ')
+                    print(f"⚠️ {msg}")
+                    self.log(msg, "WARNING")
                     return []
             else:
-                print(f"❌ Lỗi HTTP: {response.status_code}")
+                msg = f"Lỗi HTTP: {response.status_code}"
+                print(f"❌ {msg}")
+                self.log(msg, "ERROR")
                 return []
                 
         except Exception as e:
@@ -176,13 +200,19 @@ class GolikeAuto:
             if response.status_code == 200:
                 data = response.json()
                 if data.get('success'):
+                    msg = f"Hoàn thành nhiệm vụ ID:{job_id} | Nhận: {job.get('price')} VNĐ | Type: {job.get('type')}"
                     print(f"✅ Hoàn thành nhiệm vụ! Nhận: {job.get('price')} VNĐ")
+                    self.log(msg, "SUCCESS")
                     return True
                 else:
+                    msg = f"Lỗi complete job ID:{job_id} - {data.get('message')}"
                     print(f"❌ Lỗi: {data.get('message')}")
+                    self.log(msg, "ERROR")
                     return False
             else:
+                msg = f"Lỗi HTTP complete job ID:{job_id} - Status: {response.status_code}"
                 print(f"❌ Lỗi HTTP: {response.status_code}")
+                self.log(msg, "ERROR")
                 return False
                 
         except Exception as e:
@@ -252,6 +282,11 @@ class GolikeAuto:
         print(f"📱 Chế độ: {'MEmu' if self.use_memu else 'Trình duyệt'}")
         print("="*60)
         
+        # Ghi log bắt đầu
+        self.session_start = datetime.now()
+        self.log(f"=== BẮT ĐẦU AUTO {self.current_platform} ===")
+        self.log(f"Account ID: {self.current_account.get('id')} | Max jobs: {max_jobs} | Delay: {self.delay}s")
+        
         completed = 0
         failed = 0
         
@@ -276,10 +311,21 @@ class GolikeAuto:
                 print(f"\n⏳ Đợi {self.delay} giây trước khi tiếp tục...")
                 time.sleep(self.delay)
         
+        # Tính toán thời gian
+        session_end = datetime.now()
+        duration = (session_end - self.session_start).total_seconds()
+        
         print("\n" + "="*60)
         print("📊 KẾT QUẢ AUTO")
         print("="*60)
         print(f"✅ Hoàn thành: {completed} nhiệm vụ")
         print(f"❌ Thất bại: {failed} nhiệm vụ")
         print(f"💰 Tổng thu nhập ước tính: {completed * 50} VNĐ")
+        print(f"⏱️ Thời gian: {int(duration)} giây ({int(duration/60)} phút)")
         print("="*60)
+        
+        # Ghi log tổng kết
+        summary = f"=== KẾT THÚC SESSION {self.current_platform} ==="
+        self.log(summary)
+        self.log(f"Hoàn thành: {completed} | Thất bại: {failed} | Thu nhập: {completed * 50} VNĐ | Thời gian: {int(duration)}s")
+        self.log("="*50)

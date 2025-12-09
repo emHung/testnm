@@ -1,5 +1,6 @@
 # Token và dữ liệu cá nhân
 auth.txt
+auto_log.txt
 
 # Python
 __pycache__/
